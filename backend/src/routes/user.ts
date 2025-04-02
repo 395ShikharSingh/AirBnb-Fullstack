@@ -61,11 +61,7 @@ router.post("/signin", async (req: Request, res: Response) => {
       return res.status(401).json({ error: "Invalid credentials" });
     }
 
-    const token = jwt.sign(
-      { id: user.id }, // Removed role verification
-      JWT_SECRET,
-      { expiresIn: TOKEN_EXPIRATION }
-    );
+    const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: TOKEN_EXPIRATION });
 
     res.status(200).json({
       message: "SignIn successful",

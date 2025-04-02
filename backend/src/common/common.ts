@@ -9,14 +9,14 @@ dotenv.config();
 // ✅ Zod Schema for Signup
 export const signupBody = z.object({
   username: z.string().email({ message: "Invalid email format" }),
-  password: z.string().min(6, { message: "Password must be at least 6 characters" }),
+  password: z.string(),
   name: z.string().min(2, { message: "Name should have at least 2 characters" }),
 });
 
 // ✅ Zod Schema for Signin
 export const signinBody = z.object({
   username: z.string().email({ message: "Invalid email format" }),
-  password: z.string().min(6, { message: "Password is required" }),
+  password: z.string(),
 });
 
 // ✅ Zod Schema for Hotel Creation
