@@ -43,20 +43,28 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
     setLoading(true);
     try {
       const endpoint = `https://airbnb-fullstack-sgjd.onrender.com/airbnb/${role}/${type}`;
-      const payload = type === "signup" ? { name, username, password, role } : { username, password };
+      const payload = type === "signup"
+        ? { name, username, password, role }
+        : { username, password };
+      
       const response = await axios.post(endpoint, payload);
   
       if (response.status === 200 || response.status === 201) {
         if (type === "signin" && response.data.token) {
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("user", JSON.stringify(response.data.user));
+  
+          // Redirect based on role after login
+          if (role === "manager") {
+            navigate("/manager/dashboard");
+          } else {
+            navigate("/user/dashboard");
+          }
         }
   
-        // 🚀 Redirect based on role
-        if (role === "manager") {
-          navigate("/manager/dashboard");
-        } else {
-          navigate("/user/dashboard");
+        // ✅ Redirect to signin page after successful signup
+        if (type === "signup") {
+          navigate("/signin");
         }
       }
     } catch (err: any) {
@@ -65,6 +73,7 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
       setLoading(false);
     }
   };
+  
   
 
   return (

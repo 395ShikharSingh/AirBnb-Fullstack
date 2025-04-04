@@ -52,7 +52,7 @@ export default function BookingPage() {
       const data = await response.json();
       if (response.ok) {
         alert("Booking successful!");
-        navigate("/myBooking");
+        navigate("/user/myBooking");
       } else {
         alert(data.error || "Booking failed.");
       }

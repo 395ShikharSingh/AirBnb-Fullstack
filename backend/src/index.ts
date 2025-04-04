@@ -6,7 +6,7 @@ const app = express();
 
 
 app.use(cors({
-  origin: "*", 
+  origin: "https://air-bnb-fullstack-flame.vercel.app", 
   methods: ["GET", "POST", "PUT", "DELETE"], 
   allowedHeaders: ["Content-Type", "Authorization"], 
 }));

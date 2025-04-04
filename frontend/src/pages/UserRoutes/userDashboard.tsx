@@ -61,7 +61,7 @@ export default function Dashboard() {
                 <p className="text-gray-700">{hotel.description}</p>
                 <button 
                   className="mt-2 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg w-full"
-                  onClick={() => navigate(`/booking/${hotel.id}?name=${encodeURIComponent(hotel.name)}`)}
+                  onClick={() => navigate(`/user/booking/${hotel.id}?name=${encodeURIComponent(hotel.name)}`)}
                 >
                   Book Now
                 </button>
