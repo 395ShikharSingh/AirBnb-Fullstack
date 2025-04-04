@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { signinBody, signupBody, hotelSchema, prisma, JWT_SECRET } from "../common/common";
 import { authMiddleware } from "../authMiddleware";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
 
 const router = require("express").Router();
 const TOKEN_EXPIRATION = "1h";
@@ -15,32 +14,34 @@ router.post("/signup", async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Invalid input format" });
     }
 
-    const existingManager = await prisma.hotelManager.findUnique({
+    const existingUser = await prisma.hotelManager.findUnique({
       where: { username: req.body.username },
     });
 
-    if (existingManager) {
-      return res.status(409).json({ error: "Username already exists" });
+    if (existingUser) {
+      return res.status(409).json({ error: "Username already taken" });
     }
 
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-
-    const manager = await prisma.hotelManager.create({
+    const newUser = await prisma.hotelManager.create({
       data: {
         name: req.body.name,
         username: req.body.username,
-        password: hashedPassword,
-        role: "manager",
+        password: req.body.password,
+        role: "user",
       },
     });
 
-    return res.status(201).json({
-      message: "Hotel Manager added successfully",
-      role: manager.role,
+    res.status(201).json({
+      message: "User created successfully",
+      user: {
+        id: newUser.id,
+        name: newUser.name,
+        username: newUser.username,
+        role: newUser.role,
+      },
     });
   } catch (error) {
-    console.error("Error during manager signup:", error);
-    return res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
