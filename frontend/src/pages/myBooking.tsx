@@ -28,7 +28,7 @@ export default function MyBookings() {
 
     const fetchBookings = async () => {
       try {
-        const response = await fetch("http://localhost:3000/airbnb/user/myBooking", {
+        const response = await fetch("https://airbnb-fullstack-sgjd.onrender.com/airbnb/user/myBooking", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

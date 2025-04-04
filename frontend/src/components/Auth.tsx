@@ -42,7 +42,7 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
     setError("");
     setLoading(true);
     try {
-      const endpoint = `http://localhost:3000/airbnb/${role}/${type}`;
+      const endpoint = `https:/airbnb-fullstack-sgjd.onrender.com/airbnb/${role}/${type}`;
       const payload = type === "signup" ? { name, username, password, role } : { username, password };
       const response = await axios.post(endpoint, payload);
 
@@ -51,7 +51,7 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("user", JSON.stringify(response.data.user));
         }
-        navigate("/dashboard");
+        navigate("user/dashboard");
       }
     } catch (err: any) {
       setError(err.response?.data?.error || "Authentication failed. Please try again.");

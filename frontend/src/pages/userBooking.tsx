@@ -35,7 +35,7 @@ export default function BookingPage() {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/airbnb/user/booking", {
+      const response = await fetch("https://airbnb-fullstack-sgjd.onrender.com/airbnb/user/booking", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

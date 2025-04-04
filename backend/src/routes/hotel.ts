@@ -52,35 +52,28 @@ router.post("/signin", async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Invalid input format" });
     }
 
-    const existingManager = await prisma.hotelManager.findUnique({
+    const user = await prisma.hotelManager.findUnique({
       where: { username: req.body.username },
     });
 
-    if (!existingManager) {
-      return res.status(404).json({ message: "Username not found" });
+    if (!user || user.password !== req.body.password) {
+      return res.status(401).json({ error: "Invalid credentials" });
     }
 
-    const isPasswordValid = await bcrypt.compare(
-      req.body.password,
-      existingManager.password
-    );
-    if (!isPasswordValid) {
-      return res.status(401).json({ error: "Incorrect password" });
-    }
+    const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: TOKEN_EXPIRATION });
 
-    const token = jwt.sign(
-      { id: existingManager.id },
-      JWT_SECRET,
-      { expiresIn: TOKEN_EXPIRATION }
-    );
-
-    return res.status(200).json({
+    res.status(200).json({
       message: "SignIn successful",
       token,
+      user: {
+        id: user.id,
+        name: user.name,
+        username: user.username,
+        role: user.role,
+      },
     });
   } catch (error) {
-    console.error("Error during manager signin:", error);
-    return res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 

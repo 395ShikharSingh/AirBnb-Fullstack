@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 
 interface Hotel {
@@ -14,7 +14,7 @@ export default function Dashboard() {
   const [userName, setUserName] = useState("");
   const [hotels, setHotels] = useState<Hotel[]>([]);
   const [loading, setLoading] = useState(true);
-  const [showLogout, setShowLogout] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export default function Dashboard() {
       setUserName(JSON.parse(storedUser).name);
     }
     
-    fetch("http://localhost:3000/airbnb/user/allHotel")
+    fetch("https://airbnb-fullstack-sgjd.onrender.com/airbnb/user/allHotel")
       .then((response) => response.json())
       .then((data) => {
         setHotels(data.hotels);
