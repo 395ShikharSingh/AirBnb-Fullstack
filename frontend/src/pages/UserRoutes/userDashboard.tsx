@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import {  useNavigate } from "react-router-dom";
-import Header from "../components/Header";
+import Header from "../../components/Header";
 
 interface Hotel {
   id: number;
@@ -39,8 +39,14 @@ export default function Dashboard() {
 
   return (
     <div className="bg-white text-black min-h-screen">
-        <Header />
+      <Header />
       <main className="p-4">
+        {userName && (
+          <h1 className="text-2xl font-semibold mb-6 text-center text-blue-700">
+            Hi, {userName}! 👋
+          </h1>
+        )}
+  
         {loading ? (
           <div className="flex justify-center items-center h-64">
             <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-600"></div>
@@ -66,4 +72,5 @@ export default function Dashboard() {
       </main>
     </div>
   );
+  
 }

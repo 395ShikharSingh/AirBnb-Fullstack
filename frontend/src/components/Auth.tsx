@@ -42,16 +42,22 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
     setError("");
     setLoading(true);
     try {
-      const endpoint = `https:/airbnb-fullstack-sgjd.onrender.com/airbnb/${role}/${type}`;
+      const endpoint = `https://airbnb-fullstack-sgjd.onrender.com/airbnb/${role}/${type}`;
       const payload = type === "signup" ? { name, username, password, role } : { username, password };
       const response = await axios.post(endpoint, payload);
-
+  
       if (response.status === 200 || response.status === 201) {
         if (type === "signin" && response.data.token) {
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("user", JSON.stringify(response.data.user));
         }
-        navigate("user/dashboard");
+  
+        // 🚀 Redirect based on role
+        if (role === "manager") {
+          navigate("/manager/dashboard");
+        } else {
+          navigate("/user/dashboard");
+        }
       }
     } catch (err: any) {
       setError(err.response?.data?.error || "Authentication failed. Please try again.");
@@ -59,6 +65,7 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="bg-gradient-to-r from-black to-gray-900 h-screen flex flex-col justify-center">

@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 export default function Header() {
   const navigate = useNavigate();
   const storedUser = localStorage.getItem("user");
+  const role = storedUser ? JSON.parse(storedUser).role : ""; // Get role from localStorage
   const userName = storedUser ? JSON.parse(storedUser).name : "";
   const [showLogout, setShowLogout] = useState(false);
 
@@ -11,24 +12,31 @@ export default function Header() {
     if (window.confirm("Are you sure you want to logout?")) {
       localStorage.clear();
       setShowLogout(false);
-      navigate("/signin");  // Redirects to login page
+      navigate("/signin");
+    }
+  };
+
+  const handleBookingsClick = () => {
+    if (role) {
+      navigate(`/${role}/mybooking`);
+    } else {
+      alert("User role not found. Please log in again.");
     }
   };
 
   return (
-    <header className="flex justify-between items-center w-full mb-6 bg-gray-200 shadow-md shadow-gray-400 p-4">
-      {/* ✅ Clickable Title Redirecting to /dashboard */}
-      <Link to="/dashboard" className="text-2xl font-bold text-blue-600 hover:text-blue-800 transition">
+    <header className="flex justify-between items-center w-full mb-6 bg-slate-300 shadow-md shadow-gray-400 p-4">
+      <Link to={`/${role}/dashboard`} className="text-2xl font-bold text-black hover:text-blue-800 transition">
         HotelBnB
       </Link>
 
       <div className="flex items-center space-x-4">
-        <Link
-          to="/myBooking"
+        <button
+          onClick={handleBookingsClick}
           className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg"
         >
           My Bookings
-        </Link>
+        </button>
 
         {userName && (
           <div className="relative">
